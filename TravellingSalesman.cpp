@@ -18,7 +18,19 @@ class Pair
 
 bool isDest(int node, vector<int> &order)
 {
-    if(order[node]!=-1){return true;}
+    if(order[node]!=-1 || order[node]!=-2){return true;}
+    return false;
+}
+
+bool isSrc(int node, vector<int> &order)
+{
+    if(order[node]==-1){return true;}
+    return false;
+}
+
+bool isStartingPoint(int node, vector<int> &order)
+{
+    if(order[node]==-2){return true;}
     return false;
 }
 
@@ -34,9 +46,9 @@ bool notVisited(int node,int visited)
     return false;
 }
 
-Pair totalCost(int visited,int node, int n, string pathsofar,vector<vector<int>> &graph,vector<int> &order)
+Pair totalCost(int visited,int node, int n, string pathsofar,int timesofar,vector<vector<int>> &graph,vector<int> &order,vector<int> &cookTimes)
 {
-    cout<<"Node:"<<node<<" :PathSoFar:"<<pathsofar<<" Visited:"<<visited<<endl;
+    cout<<"Node:"<<node<<" PathSoFar:"<<pathsofar<<" TimeSoFar:"<<timesofar<<" Visited:"<<visited<<endl;
     int ALL_VISITED=(1 << n) - 1;
        if (visited == ALL_VISITED ) 
        {
@@ -52,11 +64,17 @@ Pair totalCost(int visited,int node, int n, string pathsofar,vector<vector<int>>
          {
             int neighborbit=1<<neighbor;
             if( (isDest(neighbor,order)) && (notVisited(orderedFrom(neighbor,order),visited)) ){continue;}
+            int cookTime=0;
+            if(isSrc(node,order)&& cookTimes[node]>timesofar)
+            {
+                    cookTime=cookTime+cookTimes[node];
+            }
             if((visited & neighborbit) ==0) // not visited
             {
-                cout<<"processing neighbor"<<endl;
-                Pair p=totalCost((visited | neighborbit), neighbor, n, pathsofar+":"+to_string(neighbor),graph,order);
-                int t=graph[node][neighbor]+p.time;
+                int neighborTime=graph[node][neighbor];
+                
+                Pair p=totalCost((visited | neighborbit), neighbor, n, pathsofar+":"+to_string(neighbor),timesofar+cookTime+neighborTime,graph,order,cookTimes);
+                int t=cookTime+neighborTime+p.time;
                 string pth=p.path;
                 if(t<time)
                 {
@@ -71,11 +89,11 @@ Pair totalCost(int visited,int node, int n, string pathsofar,vector<vector<int>>
          return p;
 }
 
-Pair tsp(vector<vector<int>> &graph,vector<int> &order) {
+Pair tsp(vector<vector<int>> &graph,vector<int> &order,vector<int> &cookTimes) {
     int n = graph.size();
   
   // Start from city 0, and only city 0 is visited initially (mask = 1)
-    Pair p= totalCost(1, 0, n,to_string(0),graph,order);  
+    Pair p= totalCost(1, 0, n,to_string(0),0,graph,order,cookTimes);  
     return p;
 }
 
@@ -85,13 +103,14 @@ int main()
 {
 
     vector<int> order ={-1,-1,0,1};
+    vector<int> cookTimes={23,15,0,0};
     
     vector<vector<int>> cost = {{0, 10, 15, 20}, 
                                 {10, 0, 35, 25}, 
                                 {15, 35, 0, 30}, 
                                 {20, 25, 30, 0}};
  
-    Pair res=tsp(cost,order);
+    Pair res=tsp(cost,order,cookTimes);
     cout << res.time << "final"<<endl;
     cout << res.path << endl;
     
