@@ -14,6 +14,7 @@ Assumptions:
 1) The graph is a complete graph since we are representing points by their latitude and longitude we can safely assume there is a path from each node to every other node.
 2) We distance formula is haversine distance
 3) Time is distance/speed ~ distance/20
+4) (1) ensures Hamiltonian cycle exists
 
 
 Recursive relation: 
