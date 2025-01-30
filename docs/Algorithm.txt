@@ -1,0 +1,44 @@
+Intution:
+The problem is modfied version of travelling salesman problem.
+
+Problem:
+Given starting point we need to visit all points at minimum cost.(no need to return to starting point)
+
+Constraints: 
+1) orderDestination should not be visited before orderSource.
+2) We need to consider 'waiting_time' of source as well.
+3) Order arrive at same time
+4) We can have maximum of 31 NODES since we are using Bits to represent Visited set
+
+Assumptions:
+1) The graph is a complete graph since we are representing points by their latitude and longitude we can safely assume there is a path from each node to every other node.
+2) We distance formula is haversine distance
+3) Time is distance/speed ~ distance/20
+
+
+Recursive relation: 
+
+Let 
+-> weight[i][j] represent time taken from i to j
+-> wait[node] represent waiting Time at node
+- > timeSoFar total time passed since we received the order
+
+= Total time taken to reach neighbor node will be :
+= timeSofFar + wait[node] + wt[node][neighbor]
+cost(node,timeSoFar)=For all neighbors Min { cost(neighbor,timeSoFar+wait[node]+wt[node][neighbor]) }
+
+
+We will stop the recursion 
+1) If all nodes visited
+2) orderDst visited before orderSrc
+================================================================================================
+
+We keep track of visited nodes using Bitmask called vistedMask;
+0001 -> represent Node 0 visited = 1<<0; 
+0010 -> represent Node 1 visited = 1<<1;
+1010 -> represent Node 4 and 1 visited 
+
+1) Final state is represented by all ones 11111= (1<<n) -1; n is total nodes
+2) Check if node i is visited    : ( (1<<i)& visitedMask) !=0
+2) Check if node i is not visited: ( (1<<i)& visitedMask) ==0
+
