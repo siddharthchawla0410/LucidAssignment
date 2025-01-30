@@ -23,6 +23,8 @@ Let
 -> wait[node] represent waiting Time at node
 - > timeSoFar total time passed since we received the order
 
+Note:final waitingCost=wait(node)-timeSpentSoFar; // if wait(node)> timeSpentSoFar else 0
+
 = Total time taken to reach neighbor node will be :
 = timeSofFar + wait[node] + wt[node][neighbor]
 cost(node,timeSoFar)=For all neighbors Min { cost(neighbor,timeSoFar+wait[node]+wt[node][neighbor]) }

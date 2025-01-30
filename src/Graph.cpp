@@ -38,13 +38,13 @@ Pair<T> Graph<T>::minimumCost(int node,int visited,string pathSoFar,T costSoFar)
     {
         int neighborState=1<<neighbor;
         int orderSrc=getOrderSrc(neighbor);// -1 if invalid
-        if((isOrderDest(neighbor)) && (notVisited(orderSrc,visited))) {continue;}
+        if((isOrderDest(neighbor)) && (notVisited(orderSrc,visited))) {continue;} // skip as OrderDest is being visited before Order Src
 
         int waitingCost=0;
 
-        if(isOrderSource(node) && getWaitingCost(node)>costSoFar)
+        if(isOrderSource(node) && getWaitingCost(node)>costSoFar) // if waiting cost > timeSpentSoFar
         {
-            waitingCost=getWaitingCost(node);
+            waitingCost=getWaitingCost(node)-costSoFar;
         }
         
         if((visited & neighborState)==0) // neighbor not visited

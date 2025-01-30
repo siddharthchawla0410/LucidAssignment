@@ -8,15 +8,17 @@ using namespace std;
 
 int main()
 {
+    // Location 0 will be considered starting point - Amans location
+    // Subsequent locations represent Order src and OrderDest 
     vector<vector<double>> locs = {
     {28.7041, 77.1025}, // # Location A (New Delhi)
-    {28.5355, 77.3910}, // # Location B (Noida)
-    {28.6139, 77.2090}, // # Location C (Connaught Place, New Delhi)
-    {28.5355, 77.2770}, // # Location D (Greater Noida)
-    {28.4595, 77.0266}  // # Location E (Gurugram)
+    {28.5355, 77.3910}, // # Location B (Noida) Src
+    {28.6139, 77.2090}, // # Location C (Connaught Place, New Delhi) Dest
+    {28.5355, 77.2770}, // # Location D (Greater Noida) Src
+    {28.4595, 77.0266}  // # Location E (Gurugram) Dest
     };
-    vector<int> loctypes={0,-1,1,-1,1};
-    vector<int> ordSrcs={-1,-1,1,-1,3}; // indicates source of order -1 if restaurant or starting point
+    vector<int> loctypes={0,-1,1,-1,1}; // represent starting point =0, src=-1, dest=+1
+    vector<int> ordSrcs={-1,-1,1,-1,3}; // indicates orderSrc -1 if restaurant or starting point
     vector<double> waitingTimes={0,23,0,45,0}; // valid only for restaurant Location
 
     vector<Location*> locations;
